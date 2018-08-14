@@ -20,6 +20,14 @@ import org.springframework.stereotype.Component;
 public class Student extends AbstractEntity{
     private String name;
 
+    public Student() {
+    }
+
+    public Student(String name, Long id) {
+        super(id);
+        this.name = name;
+    }
+
     public String getName() {
         return name;
     }

@@ -6,16 +6,25 @@
 package com.devdojo.springboot.endpoints;
 
 import com.devdojo.springboot.error.ErrorMessage;
+import com.devdojo.springboot.error.ResourceNotFoundException;
 import com.devdojo.springboot.models.Student;
 import com.devdojo.springboot.repository.StudentRepository;
 import com.devdojo.springboot.utils.DataUtil;
+import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.ResourceAccessException;
 
 /**
  *
@@ -23,7 +32,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("students")
-public class StudentEndpoint { 
+public class StudentEndpoint {
 
     @Autowired
     private DataUtil dataUtil;
@@ -32,25 +41,42 @@ public class StudentEndpoint {
 
     @GetMapping
     public ResponseEntity<?> listAll() {
-          return new ResponseEntity<>(studentRepository.findAll(), HttpStatus.OK);
+        return new ResponseEntity<>(studentRepository.findAll(), HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getStudentById(@PathVariable("id") Long id) {
+        Optional<Student> obj = studentRepository.findById(id);
+        if (obj.isPresent()) {
+            return new ResponseEntity<>(studentRepository.findById(id), HttpStatus.OK);
+        }
+        throw new ResourceNotFoundException("Student not found. Id: " + id);
+
+    }
+
+    @GetMapping(path = "name/{name}")
+    public ResponseEntity<?> getStudentByName(@PathVariable("name") String name) {
+        return new ResponseEntity<>(studentRepository.findByNameIgnoreCaseContaining(name), HttpStatus.OK);
+    }
+
+    @PostMapping
+    @Transactional(rollbackFor = Exception.class)
+//    @Transactional
+    public void save(@RequestBody Student student) throws Exception {
+        studentRepository.save(student);
+//        throw new RuntimeException();
+            new Teste().teste();
+//        return new ResponseEntity<>(studentRepository.save(student), HttpStatus.CREATED);
     }
     
-//    @GetMapping(path = "/{id}")
-//    public ResponseEntity<?> getStudentById(@PathVariable("id") Long id) {
-//        Student student = studentRepository.findById(id);
-//        if (student == null) {
-//            return new ResponseEntity<>(new ErrorMessage("Deu ruim"), HttpStatus.NOT_FOUND);
-//        }
-//        return new ResponseEntity<>(student, HttpStatus.OK);
-//    }
-    
-//    @PostMapping
-//    public ResponseEntity<?> postStudent(@RequestBody Student student) {
-//        List<Student> list = Student.getStudentList();
-//        int index = list.size() + 1;
-//        student.setId(index);
-//        list.add(student);
-//        Student.setStudentList(list); 
-//        return new ResponseEntity<>(student, HttpStatus.CREATED);   
-//    } 
+    @PutMapping
+    public ResponseEntity<?> update(@RequestBody Student student) {
+        return new ResponseEntity<>(studentRepository.save(student), HttpStatus.CREATED);
+    }
+
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity<?> delete(@PathVariable("id") Long id) {
+        studentRepository.delete(new Student(null, id));
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
