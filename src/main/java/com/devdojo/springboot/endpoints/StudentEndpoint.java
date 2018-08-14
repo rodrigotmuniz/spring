@@ -12,7 +12,9 @@ import com.devdojo.springboot.repository.StudentRepository;
 import com.devdojo.springboot.utils.DataUtil;
 import java.util.List;
 import java.util.Optional;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,8 +42,8 @@ public class StudentEndpoint {
     private StudentRepository studentRepository;
 
     @GetMapping
-    public ResponseEntity<?> listAll() {
-        return new ResponseEntity<>(studentRepository.findAll(), HttpStatus.OK);
+    public ResponseEntity<?> listAll(Pageable pageable) {
+        return new ResponseEntity<>(studentRepository.findAll(pageable), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
@@ -62,13 +64,12 @@ public class StudentEndpoint {
     @PostMapping
     @Transactional(rollbackFor = Exception.class)
 //    @Transactional
-    public void save(@RequestBody Student student) throws Exception {
+    public ResponseEntity<?> save(@Valid @RequestBody Student student) throws Exception {
         studentRepository.save(student);
-//        throw new RuntimeException();
-            new Teste().teste();
-//        return new ResponseEntity<>(studentRepository.save(student), HttpStatus.CREATED);
+//        throw new IndexOutOfBoundsException();
+        return new ResponseEntity<>(studentRepository.save(student), HttpStatus.CREATED);
     }
-    
+
     @PutMapping
     public ResponseEntity<?> update(@RequestBody Student student) {
         return new ResponseEntity<>(studentRepository.save(student), HttpStatus.CREATED);
@@ -76,7 +77,7 @@ public class StudentEndpoint {
 
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<?> delete(@PathVariable("id") Long id) {
-        studentRepository.delete(new Student(null, id));
+        studentRepository.delete(new Student(id, null, null));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
