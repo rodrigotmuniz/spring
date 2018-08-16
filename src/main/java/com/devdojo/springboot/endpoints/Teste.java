@@ -5,6 +5,9 @@
  */
 package com.devdojo.springboot.endpoints;
 
+import com.devdojo.springboot.models.Student;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  *
  * @author rodrigo.muniz
@@ -13,5 +16,9 @@ public class Teste {
     
     public void teste() throws Exception {
         throw new Exception();
+    }
+    
+    public static void JsonPropertyTest(@JsonProperty("email") String email) {
+        System.out.println(email);
     }
 }
