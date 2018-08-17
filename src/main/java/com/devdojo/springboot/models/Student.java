@@ -19,14 +19,19 @@ import org.springframework.stereotype.Component;
  * @author Rodrigo Muniz
  */
 @Entity
-public class Student extends AbstractEntity{
-    
-    @NotEmpty
+public class Student extends AbstractEntity {
+
+    @NotEmpty(message = "Coloque um nome")
     private String name;
     @Email
     private String email;
 
     public Student() {
+    }
+
+    public Student(String name, String email) {
+        this.name = name;
+        this.email = email;
     }
 
     public Student(Long id, String name, String email) {
@@ -35,7 +40,6 @@ public class Student extends AbstractEntity{
         this.email = email;
     }
 
-
     public String getEmail() {
         return email;
     }
@@ -43,8 +47,6 @@ public class Student extends AbstractEntity{
     public void setEmail(String email) {
         this.email = email;
     }
-    
-    
 
     public String getName() {
         return name;
@@ -58,16 +60,5 @@ public class Student extends AbstractEntity{
     public String toString() {
         return "Student{" + "name=" + name + ", email=" + email + '}';
     }
-    
-    
-    
-    
-    
-    
-    
-    
 
-    
-    
-    
 }

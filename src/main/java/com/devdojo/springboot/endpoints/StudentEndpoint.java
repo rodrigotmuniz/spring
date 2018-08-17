@@ -47,7 +47,8 @@ public class StudentEndpoint {
 
     @GetMapping("user/students")
     public ResponseEntity<?> listAll(Pageable pageable) {
-        return new ResponseEntity<>(studentRepository.findAll(pageable), HttpStatus.OK);
+        studentRepository.save(new Student());
+        return new ResponseEntity<>(studentRepository.findAll(pageable), HttpStatus.OK);  
     }
 
     @GetMapping("user/students/{id}")
@@ -83,7 +84,7 @@ public class StudentEndpoint {
     @DeleteMapping("admin/students/{id}")
 //    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> delete(@PathVariable("id") Long id) {
-        studentRepository.delete(new Student(id, null, null));
+        studentRepository.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
     

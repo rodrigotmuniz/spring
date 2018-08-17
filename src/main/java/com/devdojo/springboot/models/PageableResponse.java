@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 /**
  *
@@ -26,6 +27,12 @@ public class PageableResponse<T>{
     public PageableResponse() {
     }
 
+//    public PageableResponse(@JsonProperty("content") List<T> content, @JsonProperty("number") int page, @JsonProperty("totalElements") int totalElements) {
+//        this.content = content;
+//        this.page = page;
+//        this.totalElements = totalElements;
+//    }
+    
     public List<T> getContent() {
         return content;
     }
@@ -45,15 +52,4 @@ public class PageableResponse<T>{
     public int getTotalElements() {
         return totalElements;
     }
-
-    public void setTotalElements(int totalElements) {
-        this.totalElements = totalElements;
-    }
-    
-    
-
-    
-    
-    
-    
 }

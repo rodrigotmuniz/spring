@@ -11,7 +11,10 @@ import java.util.Arrays;
 import java.util.List;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
@@ -22,19 +25,32 @@ import org.springframework.web.client.RestTemplate;
 public class JavaSpringJavaClientTest {
 
     public static void main(String[] args) {
-        RestTemplate restTemplate = new RestTemplateBuilder()
-                .rootUri("http://localhost:8080/v1/user/students")
-                .basicAuthorization("kuwabara", "123456")
-                .build();
 
-//        Student obj = restTemplate.getForObject("/{id}", Student.class, "3");
-//        ResponseEntity<Student> entity = restTemplate.getForEntity("/{id}", Student.class, "3");
-//        ResponseEntity<List<Student>> exchange = restTemplate.exchange("/", HttpMethod.GET, null, 
-//                new ParameterizedTypeReference<List<Student>>() {});
-//        System.out.println(exchange.getBody());
-        ResponseEntity<PageableResponse<Student>> exchange = restTemplate.exchange("/", HttpMethod.GET, null,
-                new ParameterizedTypeReference<PageableResponse<Student>>() {
-        });
-        System.out.println(exchange.getBody().getContent());
+        JavaClientDAO dao = new JavaClientDAO();
+
+        Student testFindById = dao.findById(25L);
+        System.out.println("findById: " + (testFindById.getId() != null ? "OK" : "BAD"));
+
+        Student testSave = dao.save(new Student(null, "teste", "teste@email.com"));
+        System.out.println("save: " + (testSave.getId() != null ? "OK" : "BAD"));
+
+        List<Student> testListAll = dao.listALl();
+        System.out.println("testListAll: " + (testListAll.size() == 5 ? "OK" : "BAD"));
+
+        testSave.setName("update");
+        dao.update(testSave);
+        Student updatedStudent = dao.findById(testSave.getId());
+        System.out.println("update: " + (updatedStudent.getName().equals("update") ? "OK" : "BAD"));
+
+        dao.delete(testSave.getId());
+        Student deletedStudent = dao.findById(testSave.getId());
+        System.out.println("delete: " + (deletedStudent == null ? "OK" : "BAD"));
+
+    }
+
+    private static HttpHeaders createJsonHeader() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        return headers;
     }
 }

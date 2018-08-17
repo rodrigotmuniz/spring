@@ -9,13 +9,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.validation.constraints.NotEmpty;
-import lombok.Data;
 
 /**
  *
  * @author rodrigo.muniz
  */
-@Data
 @Entity
 public class User extends AbstractEntity {
     @NotEmpty
