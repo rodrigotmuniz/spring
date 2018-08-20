@@ -44,10 +44,13 @@ public class StudentEndpoint {
     private DataUtil dataUtil;
     @Autowired
     private StudentRepository studentRepository;
+    
+    private final String bla = "hasAnyRole('ADMIN','USER')";
 
+    @PreAuthorize(bla)
     @GetMapping("user/students")
     public ResponseEntity<?> listAll(Pageable pageable) {
-        studentRepository.save(new Student());
+//        studentRepository.save(new Student());
         return new ResponseEntity<>(studentRepository.findAll(pageable), HttpStatus.OK);  
     }
 
@@ -59,7 +62,6 @@ public class StudentEndpoint {
             return new ResponseEntity<>(studentRepository.findById(id), HttpStatus.OK);
         }
         throw new ResourceNotFoundException("Student not found. Id: " + id);
-
     }
 
     @GetMapping("user/students/name/{name}")

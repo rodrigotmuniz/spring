@@ -8,26 +8,33 @@ package com.devdojo.springboot.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 /**
  *
  * @author rodrigo.muniz
  */
 @Entity
-public class User extends AbstractEntity {
+@Table(name = "user")
+public class LocalUser extends AbstractEntity {
+
     @NotEmpty
-    @Column(unique = true) 
+    @NotNull
+    @Column(unique = true)
     private String username;
-    
-    @NotEmpty
-    @JsonIgnore
+
+    @NotNull
+//    @JsonIgnore
     private String password;
     
     @NotEmpty
+    @NotNull 
     private String name;
-    
+
     @NotEmpty
+    @NotNull
     private boolean admin;
 
     public String getUsername() {
@@ -61,15 +68,5 @@ public class User extends AbstractEntity {
     public void setAdmin(boolean admin) {
         this.admin = admin;
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
 }

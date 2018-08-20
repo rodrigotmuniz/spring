@@ -17,14 +17,14 @@ import javax.persistence.MappedSuperclass;
  * @author Rodrigo Muniz
  */
 @MappedSuperclass
-public class AbstractEntity implements Serializable{
+public class AbstractEntity implements Serializable {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     public AbstractEntity() {
     }
-    
 
     public AbstractEntity(Long id) {
         this.id = id;
@@ -37,9 +37,6 @@ public class AbstractEntity implements Serializable{
     public void setId(Long id) {
         this.id = id;
     }
-    
-    
-    
 
     @Override
     public int hashCode() {
@@ -65,6 +62,5 @@ public class AbstractEntity implements Serializable{
         }
         return true;
     }
-    
-    
+
 }

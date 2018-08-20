@@ -5,13 +5,13 @@
  */
 package com.devdojo.springboot.repository;
 
-import com.devdojo.springboot.models.User;
+import com.devdojo.springboot.models.LocalUser;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 /**
  *
  * @author rodrigo.muniz
  */
-public interface UserRepository extends PagingAndSortingRepository<User, Long>{
-    User findByUsername(String userName);
+public interface UserRepository extends PagingAndSortingRepository<LocalUser, Long>{
+    LocalUser findByUsername(String userName);
 }

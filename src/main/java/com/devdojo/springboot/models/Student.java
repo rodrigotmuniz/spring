@@ -23,7 +23,9 @@ public class Student extends AbstractEntity {
 
     @NotEmpty(message = "Coloque um nome")
     private String name;
+
     @Email
+    @NotEmpty(message = "Coloque um email")
     private String email;
 
     public Student() {

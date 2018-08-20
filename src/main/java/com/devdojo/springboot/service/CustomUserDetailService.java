@@ -5,7 +5,7 @@
  */
 package com.devdojo.springboot.service;
 
-import com.devdojo.springboot.models.User;
+import com.devdojo.springboot.models.LocalUser;
 import com.devdojo.springboot.repository.UserRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +32,7 @@ public class CustomUserDetailService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username);
+        LocalUser user = userRepository.findByUsername(username);
         List<GrantedAuthority> grantedAuthoritiesAdmin = AuthorityUtils.createAuthorityList("ROLE_USER", "ROLE_ADMIN");
         List<GrantedAuthority> grantedAuthoritiesUser = AuthorityUtils.createAuthorityList("ROLE_USER");
         
